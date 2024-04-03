@@ -6,15 +6,25 @@ export interface ICreateWorkspaceDto {
 
 export interface ICreateColumnDto {
     name: string;
+    project_id: number;
+}
+
+export interface ICreateStatusDto {
+    name: string;
+    project_id: number;
+}
+
+export interface ICreateProjectDto {
+    name: string;
     workspace_id: number;
 }
 
 export interface ICreateTask {
     name?: string;
 
-    workspaceId: number;
+    projectId: number;
 
-    columnId?: number;
+    statusId: number;
 
     description?: string;
 
@@ -24,5 +34,11 @@ export interface ICreateTask {
 
     finalDate?: string;
 }
+
+export interface AssignTaskToAnotherProjectDto {
+    taskId: number;
+  
+    projectId: number;
+  }
 
 export interface IUpdateTask extends ICreateTask {}

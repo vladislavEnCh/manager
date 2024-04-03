@@ -7,6 +7,7 @@ import { useGetColumns } from '../workspace/hooks/use-get-columns';
 import SideForm from './components/side-form';
 import CommentsMenu from './components/menu';
 import { useSideTask } from '../../store/side-task';
+import { useGetStatuses } from '../project/hooks/use-get-statuses';
 
 
 const OpenTaskView = () => {
@@ -14,14 +15,13 @@ const OpenTaskView = () => {
 
     const { isOpenSideTask, setIsOpenSideTask, taskId } = useSideTask();
     const { task, isLoading } = useGetTask(taskId!);
-    const { columnsList, isLoading: columnLoading } = useGetColumns(Number(params.workspace));
+    
 
     const router = useRouter();
     const pathname = usePathname();
 
     const closeSide = () => {
         setIsOpenSideTask(false)
-        console.log(pathname)
         router.replace(pathname, undefined,);
     }
 
@@ -30,7 +30,7 @@ const OpenTaskView = () => {
             className={`fixed top-0 z-40 right-0 h-full bg-white transition-transform duration-300 transform ${isOpenSideTask ? 'translate-x-0' : 'translate-x-full'}`}
             style={{ width: '500px' }}
         >
-            {isLoading || columnLoading ? (
+            {isLoading  ? (
                 <CircularProgress />
             ) : (
                 <div className='relative p-8'>
@@ -48,10 +48,8 @@ const OpenTaskView = () => {
                     {task && (
                         <SideForm
                             task={task}
-                            columnsList={columnsList}
                         />
                     )}
-
                     <CommentsMenu />
                 </div>
             )}

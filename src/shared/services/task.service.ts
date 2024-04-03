@@ -1,5 +1,5 @@
 import { ITask } from '../types/task.types';
-import { ICreateTask } from './dto/create.dto';
+import { AssignTaskToAnotherProjectDto, ICreateTask } from './dto/create.dto';
 import { IUpdateTaskDto } from './dto/update.dto';
 import privateAxios from './privateAxios';
 
@@ -16,17 +16,28 @@ class TasksService {
         return privateAxios.get(`/task/columns/${id}`);
     }
 
+    public async getTasksByProjectId(id: number) {
+        return privateAxios.get(`/task/project/${id}`);
+    }
+
     public async getTasks(id: number) {
         return privateAxios.get(`/task/${id}`);
     }
 
     public async getTask(id: number) {
-        console.log(id)
         return privateAxios.get(`/task/task/${id}`);
     }
 
     public async updateTasksOrder(data: ITask[]) {
         return privateAxios.patch(`/task`, data);
+    }
+
+    public async updateStatusTasksOrder(data: ITask[]) {
+        return privateAxios.patch(`/status-task`, data);
+    }
+
+    public async assignTaskToAnotherProject(data: AssignTaskToAnotherProjectDto) {
+        return privateAxios.post(`/task/assign`, data);
     }
 }
 

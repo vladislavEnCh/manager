@@ -13,6 +13,7 @@ export function useGetTask(id: number) {
         enabled: !!id,
         queryFn: () => tasksService.getTask(id),
         onSuccess: (res) => {
+            console.log(res.data)
             setTask(res?.data);
         },
         onError: (error: any) => {

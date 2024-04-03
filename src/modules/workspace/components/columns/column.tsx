@@ -9,15 +9,17 @@ import { useColumnDebounce } from '../../hooks/use-column-debounce';
 import { useCreateTask } from '../../hooks/use-create-task';
 import TaskCard from '../task-card';
 import AddTaskCard from '../task-card/add-task-card';
+import { IStatusTask } from '../../../../shared/types/status-task.types';
 
 type IColumn = {
     name: string;
     id: number;
-    workspaceId: number;
-    tasks: ITask[];
+    projectId: number;
+    statusTasks: IStatusTask[];
 };
 
-const Column: FC<IColumn> = ({ name, id, workspaceId, tasks }) => {
+const Column: FC<IColumn> = ({ name, id, projectId, statusTasks }) => {
+
     const { register, control, watch } = useForm({
         defaultValues: {
             name
@@ -27,7 +29,7 @@ const Column: FC<IColumn> = ({ name, id, workspaceId, tasks }) => {
     const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
         id,
         data: {
-            type: 'Column',
+            type: 'Status',
             data: { name, id }
         }
     });
@@ -44,7 +46,7 @@ const Column: FC<IColumn> = ({ name, id, workspaceId, tasks }) => {
 
     const { createTask } = useCreateTask();
 
-    const taskId: any = useMemo(() => tasks?.map((task: ITask) => `${task.id}a`), [tasks]);
+    const statusTaskId: any = useMemo(() => statusTasks?.map((task: IStatusTask) => `${task.id}a`), [statusTasks]);
 
     if (isDragging) {
         return (
@@ -60,8 +62,8 @@ const Column: FC<IColumn> = ({ name, id, workspaceId, tasks }) => {
     const createTaskHandler = () => {
         createTask({
             data: {
-                workspaceId,
-                columnId: id
+                statusId: id,
+                projectId,
             }
         });
     };
@@ -87,13 +89,13 @@ const Column: FC<IColumn> = ({ name, id, workspaceId, tasks }) => {
                 />
             </div>
             <AddTaskCard onClick={createTaskHandler} />
-            <SortableContext items={taskId}>
+            <SortableContext items={statusTaskId}>
                 <div className='flex flex-col gap-4 '>
-                    {tasks?.map((task: ITask) => {
+                    {statusTasks?.map((task: IStatusTask) => {
                         return (
                             <TaskCard
                                 key={task.id}
-                                task={task}
+                                statusTask={task}
                             />
                         );
                     })}

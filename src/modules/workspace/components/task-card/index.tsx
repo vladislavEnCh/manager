@@ -11,24 +11,25 @@ import { ITask } from '../../../../shared/types/task.types';
 import { useSideTask } from '../../../../store/side-task';
 import { useTasksDebounce } from '../../hooks/use-tasks-debounce';
 import { useRouter } from 'next/navigation';
+import { IStatusTask } from '../../../../shared/types/status-task.types';
 
 type ITaskCard = {
-    task: ITask;
+    statusTask: IStatusTask;
 };
 
-const TaskCard: FC<ITaskCard> = ({ task }) => {
+const TaskCard: FC<ITaskCard> = ({ statusTask }) => {
     const queryClient = useQueryClient();
 
     const { push } = useRouter();
     const { register, control, watch } = useForm({
         defaultValues: {
-            name: task.name
+            name: statusTask.task.name
         }
     });
 
     useTasksDebounce({
         watch,
-        taskId: task.id
+        taskId: statusTask.task.id
     });
 
     const {
@@ -39,10 +40,10 @@ const TaskCard: FC<ITaskCard> = ({ task }) => {
         transition,
         isDragging
     } = useSortable({
-        id: `${task.id}a`,
+        id: `${statusTask.id}a`,
         data: {
             type: 'Task',
-            data: task
+            data: statusTask
         }
     });
 
@@ -64,11 +65,11 @@ const TaskCard: FC<ITaskCard> = ({ task }) => {
     }
 
     const selectTaskHandled = () => {
-        push(`?task=${task.id}`);
-        queryClient.removeQueries({ queryKey: ['task', task.id] });
-        setIsOpenSideTask(false);
-        setSideTaskId(null);
-        setSideTaskId(task.id);
+        push(`?task=${statusTask.task.id}`);
+        //queryClient.removeQueries({ queryKey: ['task', statusTask.task.id] });
+        //setIsOpenSideTask(false);
+        //setSideTaskId(null);
+        setSideTaskId(statusTask.task.id);
         setIsOpenSideTask(true);
     };
 
@@ -98,13 +99,13 @@ const TaskCard: FC<ITaskCard> = ({ task }) => {
                 <div className='z-20'>
                     <input
                         {...register('name')}
-                        id={task.name}
+                        id={statusTask.task.name}
                         className={`bg-transparent text-base font-semibold rounded my-2 focus:outline-none focus:bg-white focus:border`}
                     />
                 </div>
             </div>
             <div className='flex flex-row gap-4'>
-                <p>Priority:</p> <PriorityContainer name={task.priority} />
+                <p>Priority:</p> <PriorityContainer name={statusTask.task.priority} />
             </div>
         </button>
     );

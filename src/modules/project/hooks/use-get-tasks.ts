@@ -3,16 +3,17 @@ import { useQuery } from 'react-query';
 
 import { tasksService } from '../../../shared/services/task.service';
 import { ITask } from '../../../shared/types/task.types';
+import { IStatusTask } from '../../../shared/types/status-task.types';
 
-export function useGetTasksByColumnId(id: number) {
+export function useGetTasksByProject(id: number) {
     const [error, setError] = useState<string | undefined>(undefined);
-	const [tasksList, setTasksList] = useState<ITask[]>([])
+    const [tasksList, setTasksList] = useState<IStatusTask[]>([]);
 
-    const { data, isLoading } = useQuery<any, ITask>({
-        queryKey: ['tasksByColumn', id],
-        queryFn: () => tasksService.getTasksByColumnId(id),
+    const { isLoading } = useQuery<any, IStatusTask>({
+        queryKey: ['tasks'],
+        queryFn: () => tasksService.getTasksByProjectId(id),
         onSuccess: (res) => {
-			setTasksList(res?.data)
+            setTasksList(res?.data);
         },
         onError: (error: any) => {
             setError(error?.response?.data?.message);

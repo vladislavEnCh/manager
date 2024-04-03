@@ -13,6 +13,7 @@ export function useGetColumns(id: number) {
         keepPreviousData: true,
         queryFn: () => columnService.getColumns(id),
         onSuccess: (res) => {
+            //console.log(res.data)
 			setColumnsList(res.data)
         },
         onError: (error: any) => {

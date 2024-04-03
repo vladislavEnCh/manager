@@ -28,6 +28,7 @@ privateAxios.interceptors.response.use(
                 return privateAxios.request(originRequest);
             } catch (error: any) {
                 if (error?.response?.status == 401) {
+                    console.log("Private route error")
                     tokensService.removeAccessToken();
                     return await authService.logout();
                 }

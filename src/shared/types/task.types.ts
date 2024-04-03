@@ -1,3 +1,5 @@
+import { IStatusTask } from "./status-task.types";
+import { IStatus } from "./status.types";
 import { IUser } from "./user.types";
 
 export interface ITask {
@@ -5,15 +7,15 @@ export interface ITask {
     description: string;
     finalDate: string;
     id: number;
-    column: {
-        id: number;
-        name: string;
-    };
+   
     name: string;
     position: number;
     priority: PriorityType;
     updatedAt: string;
     reporter: IUser;
+
+    statusTask: IStatusTask[],
+
 }
 
 export enum PriorityType {

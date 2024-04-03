@@ -27,7 +27,7 @@ const ProjectCard: FC<IProjectCard> = ({ item }) => {
     const id = open ? 'simple-popover' : undefined;
 
     const navigateToWorkspace = (e: any) => {
-        push(`workspace/${item.id}`)
+        push(`workspace/${item.id}/1`)
     };
 
     return (
